@@ -5,18 +5,18 @@ import com.empik.github.users.GitHubUserDTO;
 import com.empik.requests.UsersRequestEntity;
 import com.empik.requests.UsersRequestRepository;
 import lombok.val;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 class UsersServiceIT extends BaseIT {
 
     private static final String LOGIN = "test";
@@ -26,12 +26,12 @@ class UsersServiceIT extends BaseIT {
     @Autowired
     private UsersRequestRepository usersRequestRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         usersRequestRepository.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         usersRequestRepository.deleteAll();
     }
