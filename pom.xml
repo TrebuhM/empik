@@ -85,15 +85,50 @@
 		</resources>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<version>0.20.1</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<verbose>true</verbose>
+					<useColor>true</useColor>
+					<images>
+						<image>
+							<alias>postgres-db-integration</alias>
+							<name>postgres:13.1</name>
+							<run>
+								<env>
+									<POSTGRES_DB>empik</POSTGRES_DB>
+									<POSTGRES_USER>integration-test</POSTGRES_USER>
+									<POSTGRES_PASSWORD>integration-test</POSTGRES_PASSWORD>
+									<POSTGRES_ROOT_PASSWORD>root</POSTGRES_ROOT_PASSWORD>
+								</env>
+								<ports>
+									<port>5433:5432</port>
+								</ports>
+								<tmpfs>
+									<mount>/var/lib/postgresql/data</mount>
+								</tmpfs>
+								<volumes>
+									<bind>
+										<volume>
+											${basedir}/
+										</volume>
+									</bind>
+								</volumes>
+								<log>
+									<color>blue</color>
+								</log>
+								<wait>
+									<tcp>
+										<ports>
+											<port>5432</port>
+										</ports>
+									</tcp>
+								</wait>
+							</run>
+						</image>
+					</images>
 				</configuration>
 				<executions>
 					<execution>
@@ -111,6 +146,18 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -161,7 +208,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 

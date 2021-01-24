@@ -11,6 +11,18 @@ services:
       - PGDATA=/var/run/postgresql
     volumes:
       - postgresql_data:/var/lib/postgresql/data/pgdata
+  postgreSQL-integration-test:
+    image: postgres:13.1
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD=integration-test
+      - POSTGRES_USER=integration-test
+      - POSTGRES_DB=empik
+      - PGDATA=/var/run/postgresql
+    volumes:
+      - postgresql_data_it:/var/lib/postgresql/data/pgdata
 
 volumes:
   postgresql_data:
+  postgresql_data_it:
